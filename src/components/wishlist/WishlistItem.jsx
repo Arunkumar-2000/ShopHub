@@ -26,7 +26,7 @@ const WishlistItem = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="bg-white rounded-xl text-white shadow overflow-hidden">
       <img
         src={product.image}
         alt={product.title}
