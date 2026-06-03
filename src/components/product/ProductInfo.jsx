@@ -9,7 +9,7 @@ import {
 
 import {
   addToWishlist,
-} from "../../features/wishlist/wishlistSlice";
+} from "../../features/wishList/wishListSlice";
 
 const ProductInfo = ({
   product,

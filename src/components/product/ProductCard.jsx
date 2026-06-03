@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import RatingStars from "./RatingStars";
 
 import { addToCart } from "../../features/cart/cartSlice";
-import { addToWishlist } from "../../features/wishlist/wishlistSlice";
+import { addToWishlist } from "../../features/wishList/wishListSlice";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
