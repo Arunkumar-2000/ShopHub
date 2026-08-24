@@ -1,30 +1,32 @@
 import { Heart, ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../ui/Button";
+import Toast from "../ui/Toast";
 
-import {
-  addToCart,
-} from "../../features/cart/cartSlice";
+import { addToCart } from "../../features/cart/cartSlice";
+import { addToWishlist } from "../../features/wishList/wishListSlice";
 
-import {
-  addToWishlist,
-} from "../../features/wishList/wishListSlice";
-
-const ProductInfo = ({
-  product,
-  quantity,
-}) => {
+const ProductInfo = ({ product, quantity }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addProductToCart = () => {
-    for (
-      let i = 0;
-      i < quantity;
-      i++
-    ) {
+    for (let i = 0; i < quantity; i += 1) {
       dispatch(addToCart(product));
     }
+
+    Toast.success(
+      `${quantity} ${quantity === 1 ? "item" : "items"} added to cart`
+    );
+    navigate("/cart");
+  };
+
+  const addProductToWishlist = () => {
+    dispatch(addToWishlist(product));
+    Toast.success(`${product.title} added to wishlist`);
+    navigate("/wishlist");
   };
 
   return (
@@ -33,54 +35,35 @@ const ProductInfo = ({
         {product.category}
       </span>
 
-      <h1 className="text-4xl font-bold mt-4">
-        {product.title}
-      </h1>
+      <h1 className="text-4xl font-bold mt-4">{product.title}</h1>
 
-      <p className="mt-4 text-gray-600">
-        {product.description}
-      </p>
+      <p className="mt-4 text-gray-600">{product.description}</p>
 
       <div className="mt-6">
-        <h2 className="text-3xl font-bold text-blue-600">
-          ₹{product.price}
-        </h2>
+        <h2 className="text-3xl font-bold text-blue-600">₹{product.price}</h2>
       </div>
 
       <div className="mt-4">
         <p>
           Rating:
-          <span className="font-medium ml-2">
-            {product.rating}
-          </span>
+          <span className="font-medium ml-2">{product.rating}</span>
         </p>
       </div>
 
       <div className="mt-4">
         <p>
           Stock:
-          <span className="font-medium ml-2">
-            {product.stock}
-          </span>
+          <span className="font-medium ml-2">{product.stock}</span>
         </p>
       </div>
 
       <div className="flex gap-4 mt-8">
-        <Button
-          onClick={addProductToCart}
-        >
+        <Button onClick={addProductToCart}>
           <ShoppingCart size={18} />
           Add To Cart
         </Button>
 
-        <Button
-          variant="outline"
-          onClick={() =>
-            dispatch(
-              addToWishlist(product)
-            )
-          }
-        >
+        <Button variant="outline" onClick={addProductToWishlist}>
           <Heart size={18} />
           Wishlist
         </Button>

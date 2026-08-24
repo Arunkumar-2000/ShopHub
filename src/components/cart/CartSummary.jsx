@@ -1,18 +1,22 @@
 import Button from "../ui/Button";
+import Toast from "../ui/Toast";
 
-const CartSummary = ({
-  totalItems,
-  subtotal,
-}) => {
-  const shipping =
-    subtotal > 5000 ? 0 : 199;
+const CartSummary = ({ totalItems, subtotal }) => {
+  const shipping = subtotal > 5000 ? 0 : 199;
 
-  const total =
-    subtotal + shipping;
+  const total = subtotal + shipping;
+
+  const handleCheckout = () => {
+    Toast.success("Proceeded successfully");
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
 
   return (
     <div className="bg-white rounded-xl text-gray-800 shadow p-6">
-      <h2 className="text-xl  font-bold mb-6">
+      <h2 className="text-xl font-bold mb-6">
         Order Summary
       </h2>
 
@@ -30,9 +34,7 @@ const CartSummary = ({
         <div className="flex justify-between">
           <span>Shipping</span>
           <span>
-            {shipping === 0
-              ? "Free"
-              : `₹${shipping}`}
+            {shipping === 0 ? "Free" : `₹${shipping}`}
           </span>
         </div>
 
@@ -44,7 +46,11 @@ const CartSummary = ({
         </div>
       </div>
 
-      <Button className="w-full mt-6">
+      <Button
+        type="button"
+        onClick={handleCheckout}
+        className="w-full mt-6"
+      >
         Proceed To Checkout
       </Button>
     </div>

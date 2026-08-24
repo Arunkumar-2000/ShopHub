@@ -1,15 +1,35 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
 
 import RatingStars from "./RatingStars";
+import Toast from "../ui/Toast";
 
 import { addToCart } from "../../features/cart/cartSlice";
 import { addToWishlist } from "../../features/wishList/wishListSlice";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    dispatch(addToCart(product));
+    Toast.success(`${product.title} added to cart`);
+    navigate("/cart");
+  };
+
+  const handleAddToWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    dispatch(addToWishlist(product));
+    Toast.success(`${product.title} added to wishlist`);
+    navigate("/wishlist");
+  };
 
   return (
     <div className="bg-white rounded-xl shadow hover:shadow-lg transition-all overflow-hidden">
@@ -26,9 +46,11 @@ const ProductCard = ({ product }) => {
           {product.category}
         </span>
 
-        <h3 className="font-semibold text-lg mt-2">
-          {product.title}
-        </h3>
+        <Link to={`/products/${product.id}`}>
+          <h3 className="font-semibold text-lg mt-2 hover:text-blue-600 transition-colors">
+            {product.title}
+          </h3>
+        </Link>
 
         <p className="text-gray-500 text-sm mt-1">
           {product.description}
@@ -39,27 +61,23 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="flex justify-between items-center mt-4">
-          <div>
-            <h4 className="text-xl font-bold">
-              ₹{product.price}
-            </h4>
-          </div>
+          <h4 className="text-xl font-bold">₹{product.price}</h4>
 
           <div className="flex gap-2">
             <button
-              onClick={() =>
-                dispatch(addToWishlist(product))
-              }
-              className="p-2 rounded-lg border hover:bg-red-50"
+              type="button"
+              onClick={handleAddToWishlist}
+              aria-label="Add to wishlist"
+              className="p-2 rounded-lg border hover:bg-red-50 hover:text-red-500 transition-colors"
             >
               <Heart size={18} />
             </button>
 
             <button
-              onClick={() =>
-                dispatch(addToCart(product))
-              }
-              className="p-2 rounded-lg bg-blue-600 text-white"
+              type="button"
+              onClick={handleAddToCart}
+              aria-label="Add to cart"
+              className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
             >
               <ShoppingCart size={18} />
             </button>

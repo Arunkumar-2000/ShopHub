@@ -5,19 +5,23 @@ import {
   removeFromCart,
   updateQuantity,
 } from "../../features/cart/cartSlice";
+import Toast from "../ui/Toast";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleQuantityChange = (
-    value
-  ) => {
+  const handleQuantityChange = (value) => {
     dispatch(
       updateQuantity({
         id: item.id,
         quantity: Number(value),
       })
     );
+  };
+
+  const handleRemove = () => {
+    dispatch(removeFromCart(item.id));
+    Toast.success(`${item.title} removed from cart`);
   };
 
   return (
@@ -29,9 +33,7 @@ const CartItem = ({ item }) => {
       />
 
       <div className="flex-1">
-        <h3 className="font-semibold text-lg">
-          {item.title}
-        </h3>
+        <h3 className="font-semibold text-lg">{item.title}</h3>
 
         <p className="text-gray-500 mt-1">
           {item.category}
@@ -46,18 +48,13 @@ const CartItem = ({ item }) => {
         <select
           value={item.quantity}
           onChange={(e) =>
-            handleQuantityChange(
-              e.target.value
-            )
+            handleQuantityChange(e.target.value)
           }
           className="border rounded-lg p-2"
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
             (qty) => (
-              <option
-                key={qty}
-                value={qty}
-              >
+              <option key={qty} value={qty}>
                 {qty}
               </option>
             )
@@ -65,12 +62,9 @@ const CartItem = ({ item }) => {
         </select>
 
         <button
-          onClick={() =>
-            dispatch(
-              removeFromCart(item.id)
-            )
-          }
-          className="flex items-center gap-2 text-red-500"
+          type="button"
+          onClick={handleRemove}
+          className="flex items-center gap-2 text-red-500 hover:text-red-600 transition-colors"
         >
           <Trash2 size={18} />
           Remove
