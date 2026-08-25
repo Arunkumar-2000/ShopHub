@@ -1,18 +1,18 @@
 import Button from "../ui/Button";
 import Toast from "../ui/Toast";
+import { useNavigate } from "react-router-dom";
 
 const CartSummary = ({ totalItems, subtotal }) => {
   const shipping = subtotal > 5000 ? 0 : 199;
 
   const total = subtotal + shipping;
+  const navigate = useNavigate();
+const handleCheckout = () => {
+  Toast.success("Proceeding to checkout...");
 
-  const handleCheckout = () => {
-    Toast.success("Proceeded successfully");
-    
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  };
+  // setTimeout(() => {navigate("/checkout")}, 1000);
+};
+
 
   return (
     <div className="bg-white rounded-xl text-gray-800 shadow p-6">
